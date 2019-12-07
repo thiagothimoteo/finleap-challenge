@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import CardList from './components/CardList'
+import React, { useEffect } from 'react';
+import { useDispatch } from "react-redux";
+import CitiesList from './components/CitiesList'
 import SearchBox from './components/SearchBox'
 
 const App = () => {
-  const [cities, setCities] = useState([])
+  const dispatch = useDispatch()
 
   useEffect(()=> {
     const getListOfCities = async () => {
@@ -21,19 +22,22 @@ const App = () => {
         }
       ))
 
-      setCities(citiesList)
+      dispatch({
+        type: 'LOAD_CITIES',
+        cities: citiesList
+      })
     }
     getListOfCities()
-  }, [])
+  }, [dispatch])
 
   return (
     <>
       <header>
         <h1>Weather Monster</h1>
-        <SearchBox cities={cities} />
+        <SearchBox />
       </header>
       <main>
-        <CardList cities={cities} />
+        <CitiesList />
       </main>
     </>
   );
