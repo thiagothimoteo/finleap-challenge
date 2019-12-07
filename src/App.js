@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CardList from './components/CardList'
+import SearchBox from './components/SearchBox'
 
 const App = () => {
   const [cities, setCities] = useState([])
@@ -29,6 +30,7 @@ const App = () => {
     <>
       <header>
         <h1>Weather Monster</h1>
+        <SearchBox cities={cities} />
       </header>
       <main>
         <CardList cities={cities} />
