@@ -8,17 +8,26 @@ export default (state = initialState, action) => {
         cities: action.cities
       }
     case 'ADD_CITY':
-      const cities = state.cities.map(city => {
-        if (city.id.toString() === action.cityID) {
-          city.isActive = true
-        }
-
-        return city
-      })
-
       return {
         ...state,
-        cities
+        cities: state.cities.map(city => {
+          if (city.id.toString() === action.cityID) {
+            city.isActive = true
+          }
+
+          return city
+        })
+      }
+    case 'REMOVE_CITY':
+      return {
+        ...state,
+        cities: state.cities.map(city => {
+          if (city.id === action.cityID) {
+            city.isActive = false
+          }
+
+          return city
+        })
       }
     case 'ORDER_CITIES_BY_MAX_TEMPERATURE':
       const sortedCities = state.cities.sort((cityA, cityB) => cityB.tempMax - cityA.tempMax)

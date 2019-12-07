@@ -29,6 +29,7 @@ const CitiesList = () => {
           ? (cities.map(city => (
               city.isActive && <City
                 key={city.id}
+                id={city.id}
                 name={city.name}
                 min={city.tempMin}
                 max={city.tempMax}
