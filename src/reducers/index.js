@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import citiesReducers from './cards'
+import citiesReducers from './cities'
 
 const Reducers = combineReducers({
   cities: citiesReducers
