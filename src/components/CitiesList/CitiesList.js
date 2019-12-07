@@ -26,16 +26,14 @@ const CitiesList = () => {
     <div className={classes.cardList}>
       {
         cities
-          ? (cities.map(city => {
-              if (!city.isActive) return
-
-              return <City
+          ? (cities.map(city => (
+              city.isActive && <City
                 key={city.id}
                 name={city.name}
                 min={city.tempMin}
                 max={city.tempMax}
               />
-            }))
+            )))
           : <div>Nothing to show</div>
       }
     </div>
