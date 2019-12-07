@@ -13,6 +13,10 @@ const useStyles = createUseStyles({
       marginBottom: 32
     }
   },
+  title: {
+    textAlign: 'center',
+    marginBottom: 32
+  }
 })
 
 const App = () => {
@@ -51,7 +55,7 @@ const App = () => {
   return (
     <div className={classes.container}>
       <header>
-        <h1>Weather Monster</h1>
+        <h1 className={classes.title}>Weather Monster</h1>
         <SearchBox />
       </header>
       <main>

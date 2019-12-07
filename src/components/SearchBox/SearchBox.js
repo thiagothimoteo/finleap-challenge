@@ -1,32 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect, useRef } from 'react'
+import { useSelector } from "react-redux";
 import { createUseStyles } from 'react-jss'
+
+import SearchBoxInput from './SearchBoxInput'
+import SearchBoxResults from './SearchBoxResults'
 
 const useStyles = createUseStyles({
   dropdown: {
     position: 'relative',
     width: '100%',
-    maxWidth: 420
-  },
-  dropdownResults: {
-    display: props => props.isFocused ? 'block' : 'none',
-    position: 'absolute',
-    width: '100%',
-    maxHeight:  240,
-    paddingLeft: 0,
-    top: 20,
-    left: 0,
-    border: '1px solid #ddd',
-    overflow: 'auto'
-  },
-  dropdownResultsItem: {
-    padding: [8, 16],
-    backgroundColor: '#fff',
-    listStyle: 'none',
-    '&:hover': {
-      backgroundColor: '#eee',
-      cursor: 'pointer'
-    }
+    maxWidth: 500,
+    margin: [0, 'auto'],
   }
 })
 
@@ -34,71 +18,59 @@ const SearchBox = () => {
   const { cities } = useSelector(state => state.cities)
   const [results, setResults] = useState([])
   const [searchString, setSearchString] = useState('')
-  const [isFocused, setFocus] = useState(false)
-  const classes = useStyles({ isFocused })
-  const dispatch = useDispatch()
+  const [isActive, setActive] = useState(false)
+  const classes = useStyles({ isActive })
+
+  const dropdownRef = useRef(null)
 
   useEffect(() => {
+    setSearchString('')
     setResults(cities)
+    setActive(false)
   }, [cities])
 
-  const handleChange = event => {
-    const value = event.target.value
+  const filterResults = value => {
+    return cities.filter(city => city.name.toLowerCase().search(value.toLowerCase()) !== -1)
+  }
+
+  const handleChange = value => {
     const filteredResults = filterResults(value)
 
     setSearchString(value)
     setResults(filteredResults)
   }
 
-  const filterResults = value => {
-    return cities
-      .filter(city => city.name.toLowerCase().search(value.toLowerCase()) !== -1)
-  }
-
   const handleFocus = () => {
-    setFocus(true)
+    setActive(true)
   }
 
-  const handleBlur = () => {
-    // setFocus(false)
+  const handleClickOutsideDropdown = event => {
+    const dropdown = dropdownRef.current
+
+    if (dropdown && !dropdown.contains(event.target)) {
+      setActive(false)
+    }
   }
 
-  const handleClick = event => {
-    dispatch({
-      type: 'ADD_CITY',
-      cityID: event.target.id
-    })
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutsideDropdown, true)
 
-    dispatch({
-      type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
-      cityID: event.target.id
-    })
-  }
+    return () => {
+      document.removeEventListener('click', handleClickOutsideDropdown, true)
+    }
+  })
 
   return (
-    <div className={classes.dropdown}>
-      <input
-        type="text"
-        placeholder="Type the name of a city"
+    <div className={classes.dropdown} ref={dropdownRef}>
+      <SearchBoxInput
         onChange={handleChange}
         onFocus={handleFocus}
-        onBlur={handleBlur}
         value={searchString}
       />
-      <ul className={classes.dropdownResults}>
-        {
-          results && results.map(result => (
-            <li
-              key={result.id}
-              id={result.id}
-              className={classes.dropdownResultsItem}
-              onClick={handleClick}
-            >
-              {result.name}
-            </li>
-          ))
-        }
-      </ul>
+      <SearchBoxResults
+        isActive={isActive}
+        results={results}
+      />
     </div>
   )
 }
