@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useSelector } from "react-redux";
 
-const SearchBox = ({cities, ...rest}) => {
-  const [citiesList, setCitiesList] = useState([])
-
-  useEffect(() => {
-    setCitiesList(cities)
-  }, [cities])
+const SearchBox = () => {
+  const { cities } = useSelector(state => state.cities)
 
   return (
-    <div {...rest}>
+    <div>
       <input type="text" placeholder="Type the name of a city" />
       <ul>
         {
-          citiesList.map(city => <li key={city.id}>{city.name}</li>)
+          cities && cities.map(city => <li key={city.id}>{city.name}</li>)
         }
       </ul>
     </div>
