@@ -8,7 +8,10 @@ const useStyles = createUseStyles({
   container: {
     maxWidth: 1000,
     margin: "0 auto",
-    padding: 32
+    padding: 32,
+    '& > *': {
+      marginBottom: 32
+    }
   },
 })
 
