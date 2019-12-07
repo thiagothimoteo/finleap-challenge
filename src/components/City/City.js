@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Card = ({name, min, max, ...rest}) => {
+const City = ({name, min, max, ...rest}) => {
   return (
     <div {...rest}>
       <h2>{name}</h2>
@@ -14,4 +14,4 @@ const Card = ({name, min, max, ...rest}) => {
   )
 }
 
-export default Card
+export default City
