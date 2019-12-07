@@ -1,10 +1,20 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from "react-redux";
+import { createUseStyles } from 'react-jss'
 import CitiesList from './components/CitiesList'
 import SearchBox from './components/SearchBox'
 
+const useStyles = createUseStyles({
+  container: {
+    maxWidth: 1000,
+    margin: "0 auto",
+    padding: 32
+  },
+})
+
 const App = () => {
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   useEffect(()=> {
     const getListOfCities = async () => {
@@ -31,7 +41,7 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <>
+    <div className={classes.container}>
       <header>
         <h1>Weather Monster</h1>
         <SearchBox />
@@ -39,7 +49,7 @@ const App = () => {
       <main>
         <CitiesList />
       </main>
-    </>
+    </div>
   );
 }
 
