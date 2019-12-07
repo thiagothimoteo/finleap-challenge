@@ -68,6 +68,11 @@ const SearchBox = () => {
       type: 'ADD_CITY',
       cityID: event.target.id
     })
+
+    dispatch({
+      type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
+      cityID: event.target.id
+    })
   }
 
   return (

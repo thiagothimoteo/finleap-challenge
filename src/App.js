@@ -39,6 +39,11 @@ const App = () => {
         type: 'LOAD_CITIES',
         cities: citiesList
       })
+
+      dispatch({
+        type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
+        cities: citiesList
+      })
     }
     getListOfCities()
   }, [dispatch])
