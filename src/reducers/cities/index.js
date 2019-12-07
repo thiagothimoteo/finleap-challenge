@@ -7,6 +7,19 @@ export default (state = initialState, action) => {
         ...state,
         cities: action.cities
       }
+    case 'ADD_CITY':
+      const cities = state.cities.map(city => {
+        if (city.id.toString() === action.cityID) {
+          city.isActive = true
+        }
+
+        return city
+      })
+
+      return {
+        ...state,
+        cities
+      }
     default:
       return state
   }

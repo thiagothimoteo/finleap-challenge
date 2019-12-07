@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { createUseStyles } from 'react-jss'
 
 const useStyles = createUseStyles({
@@ -20,9 +20,13 @@ const useStyles = createUseStyles({
     overflow: 'auto'
   },
   dropdownResultsItem: {
-    padding: 16,
+    padding: [8, 16],
     backgroundColor: '#fff',
-    listStyle: 'none'
+    listStyle: 'none',
+    '&:hover': {
+      backgroundColor: '#eee',
+      cursor: 'pointer'
+    }
   }
 })
 
@@ -32,6 +36,7 @@ const SearchBox = () => {
   const [searchString, setSearchString] = useState('')
   const [isFocused, setFocus] = useState(false)
   const classes = useStyles({ isFocused })
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setResults(cities)
@@ -55,7 +60,14 @@ const SearchBox = () => {
   }
 
   const handleBlur = () => {
-    setFocus(false)
+    // setFocus(false)
+  }
+
+  const handleClick = event => {
+    dispatch({
+      type: 'ADD_CITY',
+      cityID: event.target.id
+    })
   }
 
   return (
@@ -73,7 +85,9 @@ const SearchBox = () => {
           results && results.map(result => (
             <li
               key={result.id}
+              id={result.id}
               className={classes.dropdownResultsItem}
+              onClick={handleClick}
             >
               {result.name}
             </li>
