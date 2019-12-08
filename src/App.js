@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { createUseStyles } from 'react-jss'
 import CitiesList from './components/CitiesList'
 import SearchBox from './components/SearchBox'
@@ -21,26 +21,32 @@ const useStyles = createUseStyles({
 })
 
 const App = () => {
+  const { cities } = useSelector(state => state.cities)
+  const [hasSelected, setHasSelected] = useState(false)
   const dispatch = useDispatch()
   const classes = useStyles()
 
-  const loadCitiesList = async () => {
-    const data = await getListOfCities()
+  useEffect(() => {
+    const loadCitiesList = async () => {
+      const data = await getListOfCities()
 
-    dispatch({
-      type: 'LOAD_CITIES',
-      cities: data
-    })
+      dispatch({
+        type: 'LOAD_CITIES',
+        cities: data
+      })
 
-    dispatch({
-      type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
-      cities: data
-    })
-  }
+      dispatch({
+        type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
+        cities: data
+      })
+    }
+
+    loadCitiesList()
+  }, [dispatch])
 
   useEffect(() => {
-    loadCitiesList()
-  })
+    if (cities) setHasSelected(!!cities.find(city => city.isActive))
+  }, [cities])
 
   return (
     <div className={classes.container}>
@@ -49,10 +55,14 @@ const App = () => {
         <SearchBox />
       </header>
       <main>
-        <CitiesList />
+        {
+          hasSelected
+            ? <CitiesList cities={cities} />
+            : <p>There are no cities selected :(</p>
+        }
       </main>
     </div>
-  );
+  )
 }
 
 export default App;
