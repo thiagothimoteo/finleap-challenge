@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react';
 import { createUseStyles } from 'react-jss'
+import { Provider } from 'react-redux';
+
+import Store from './store'
 import CitiesList from './components/CitiesList'
 import SearchBox from './components/SearchBox'
-import { getListOfCities } from './services'
 
 const useStyles = createUseStyles({
   container: {
@@ -21,47 +22,16 @@ const useStyles = createUseStyles({
 })
 
 const App = () => {
-  const { cities } = useSelector(state => state.cities)
-  const [hasSelected, setHasSelected] = useState(false)
-  const dispatch = useDispatch()
   const classes = useStyles()
 
-  useEffect(() => {
-    const loadCitiesList = async () => {
-      const data = await getListOfCities()
-
-      dispatch({
-        type: 'LOAD_CITIES',
-        cities: data
-      })
-
-      dispatch({
-        type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
-        cities: data
-      })
-    }
-
-    loadCitiesList()
-  }, [dispatch])
-
-  useEffect(() => {
-    if (cities) setHasSelected(!!cities.find(city => city.isActive))
-  }, [cities])
-
   return (
-    <div className={classes.container}>
-      <header>
+    <Provider store={Store}>
+      <div className={classes.container}>
         <h1 className={classes.title}>Weather Monster</h1>
         <SearchBox />
-      </header>
-      <main>
-        {
-          hasSelected
-            ? <CitiesList cities={cities} />
-            : <p>There are no cities selected :(</p>
-        }
-      </main>
-    </div>
+        <CitiesList />
+      </div>
+    </Provider>
   )
 }
 
