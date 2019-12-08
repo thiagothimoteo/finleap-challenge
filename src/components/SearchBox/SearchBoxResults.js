@@ -1,6 +1,5 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import { useDispatch } from 'react-redux'
 
 const useStyles = createUseStyles({
   searchBoxResults: {
@@ -26,15 +25,11 @@ const useStyles = createUseStyles({
   }
 })
 
-const SearchBoxResults = ({ results, isActive }) => {
+const SearchBoxResults = ({ results, isActive, onClick }) => {
   const classes = useStyles({ isActive })
-  const dispatch = useDispatch()
 
   const handleClick = event => {
-    dispatch({
-      type: 'ADD_CITY',
-      cityID: event.target.id
-    })
+    onClick(event.target.value)
   }
 
   return (

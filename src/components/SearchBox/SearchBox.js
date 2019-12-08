@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { createUseStyles } from 'react-jss'
 
 import SearchBoxInput from './SearchBoxInput'
@@ -15,13 +15,13 @@ const useStyles = createUseStyles({
 })
 
 const SearchBox = () => {
-  const { cities } = useSelector(state => state.cities)
+  const dispatch = useDispatch()
+  const cities = useSelector(state => state.cities)
   const [results, setResults] = useState([])
   const [searchString, setSearchString] = useState('')
   const [isActive, setActive] = useState(false)
-  const classes = useStyles({ isActive })
-
   const dropdownRef = useRef(null)
+  const classes = useStyles({ isActive })
 
   useEffect(() => {
     const orderByNameResults = orderByName(cities)
@@ -35,14 +35,6 @@ const SearchBox = () => {
     return cities.filter(city => city.name.toLowerCase().search(value.toLowerCase()) !== -1)
   }
 
-  const handleChange = value => {
-    const filteredResults = filterResults(value)
-    const orderByNameResults = orderByName(filteredResults)
-
-    setSearchString(value)
-    setResults(orderByNameResults)
-  }
-
   const orderByName = cities => {
     if (!cities) return
 
@@ -52,6 +44,21 @@ const SearchBox = () => {
 
       return 0
     })
+  }
+
+  const handleClick = event => {
+    dispatch({
+      type: 'ADD_CITY',
+      cityID: event.target.id
+    })
+  }
+
+  const handleChange = value => {
+    const filteredResults = filterResults(value)
+    const orderByNameResults = orderByName(filteredResults)
+
+    setSearchString(value)
+    setResults(orderByNameResults)
   }
 
   const handleFocus = () => {
@@ -84,6 +91,7 @@ const SearchBox = () => {
       <SearchBoxResults
         isActive={isActive}
         results={results}
+        onClick={handleClick}
       />
     </div>
   )
