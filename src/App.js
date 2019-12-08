@@ -40,7 +40,7 @@ const App = () => {
 
   useEffect(() => {
     loadCitiesList()
-  }, [dispatch])
+  })
 
   return (
     <div className={classes.container}>

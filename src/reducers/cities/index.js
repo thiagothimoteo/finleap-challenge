@@ -30,11 +30,11 @@ export default (state = initialState, action) => {
         })
       }
     case 'ORDER_CITIES_BY_MAX_TEMPERATURE':
-      const sortedCities = state.cities.sort((cityA, cityB) => cityB.tempMax - cityA.tempMax)
-
       return {
         ...state,
-        cities: sortedCities
+        cities: state.cities.sort((cityA, cityB) =>
+          cityB.tempMax - cityA.tempMax
+        )
       }
     default:
       return state

@@ -24,8 +24,10 @@ const SearchBox = () => {
   const dropdownRef = useRef(null)
 
   useEffect(() => {
+    const orderByNameResults = orderByName(cities)
+
     setSearchString('')
-    setResults(cities)
+    setResults(orderByNameResults)
     setActive(false)
   }, [cities])
 
@@ -35,9 +37,21 @@ const SearchBox = () => {
 
   const handleChange = value => {
     const filteredResults = filterResults(value)
+    const orderByNameResults = orderByName(filteredResults)
 
     setSearchString(value)
-    setResults(filteredResults)
+    setResults(orderByNameResults)
+  }
+
+  const orderByName = cities => {
+    if (!cities) return
+
+    return cities.concat().sort((cityA, cityB) => {
+      if (cityA.name > cityB.name) return 1
+      if (cityA.name < cityB.name) return -1
+
+      return 0
+    })
   }
 
   const handleFocus = () => {
