@@ -1,14 +1,18 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 
-import reducer, { initialState } from './reducers/cities'
+import rootReducer from './reducers'
 
-const renderWithRedux = ( ui, { initialState, store = createStore(reducer, initialState) } = {}) => {
+const renderWithRedux = ( ui, { initialState, store = createStore(rootReducer, applyMiddleware(thunk)) } = {}) => {
   return {
-    ...render(<Provider store={store}>{ui}</Provider>),
+    ...render(
+      <Provider store={store}>
+        {ui}
+      </Provider>),
     store,
   }
 }
