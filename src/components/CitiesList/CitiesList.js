@@ -25,26 +25,24 @@ const useStyles = createUseStyles({
 
 const CitiesList = () => {
   const classes = useStyles()
-  const { cities } = useSelector(state => state.cities)
+  const cities = useSelector(state => state.cities)
   const [hasSelected, setHasSelected] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const loadCitiesList = async () => {
-      const data = await getListOfCities()
+    getListOfCities().then(
+      data => {
+        dispatch({
+          type: 'LOAD_CITIES',
+          cities: data
+        })
 
-      dispatch({
-        type: 'LOAD_CITIES',
-        cities: data
-      })
-
-      dispatch({
-        type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
-        cities: data
-      })
-    }
-
-    loadCitiesList()
+        dispatch({
+          type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
+          cities: data
+        })
+      }
+    )
   }, [dispatch])
 
   useEffect(() => {
