@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { createUseStyles } from 'react-jss'
 import CitiesList from './components/CitiesList'
 import SearchBox from './components/SearchBox'
+import { getListOfCities } from './services'
 
 const useStyles = createUseStyles({
   container: {
@@ -23,33 +24,22 @@ const App = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
 
-  useEffect(()=> {
-    const getListOfCities = async () => {
-      const response = await fetch(`${process.env.REACT_APP_OPEN_WEATHER_API_URL}group?id=${process.env.REACT_APP_CITIES_ID}&appid=${process.env.REACT_APP_OPEN_WEATHER_API_ID}&units=metric`)
+  const loadCitiesList = async () => {
+    const data = await getListOfCities()
 
-      const data = await response.json()
+    dispatch({
+      type: 'LOAD_CITIES',
+      cities: data
+    })
 
-      const citiesList = data.list.map((city, index) => (
-        {
-          id: city.id,
-          name: city.name,
-          tempMin: city.main.temp_min,
-          tempMax: city.main.temp_max,
-          isActive: index < 10
-        }
-      ))
+    dispatch({
+      type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
+      cities: data
+    })
+  }
 
-      dispatch({
-        type: 'LOAD_CITIES',
-        cities: citiesList
-      })
-
-      dispatch({
-        type: 'ORDER_CITIES_BY_MAX_TEMPERATURE',
-        cities: citiesList
-      })
-    }
-    getListOfCities()
+  useEffect(() => {
+    loadCitiesList()
   }, [dispatch])
 
   return (
