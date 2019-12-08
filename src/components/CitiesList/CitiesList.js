@@ -51,6 +51,13 @@ const CitiesList = () => {
     if (cities) setHasSelected(!!cities.find(city => city.isActive))
   }, [cities])
 
+  const handleClick = id => {
+    dispatch({
+      type: 'REMOVE_CITY',
+      cityID: id
+    })
+  }
+
   return (
     <main className={classes.cardList}>
       {
@@ -62,6 +69,7 @@ const CitiesList = () => {
                 name={city.name}
                 min={city.tempMin}
                 max={city.tempMax}
+                onClick={handleClick}
               />
             ))
           : <h2 className={classes.blankslate}>There are no cities selected :(</h2>
