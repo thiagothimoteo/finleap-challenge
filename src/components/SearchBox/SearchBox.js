@@ -53,7 +53,8 @@ const SearchBox = () => {
     })
   }
 
-  const handleChange = value => {
+  const handleChange = event => {
+    const value = event.target.value
     const filteredResults = filterResults(value)
     const orderByNameResults = orderByName(filteredResults)
 

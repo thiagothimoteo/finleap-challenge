@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { createUseStyles } from 'react-jss'
 
 const useStyles = createUseStyles({
@@ -13,22 +14,21 @@ const useStyles = createUseStyles({
 
 const SearchBoxInput = ({ value, onChange, onFocus }) => {
   const classes = useStyles()
-  const handleChange = event => {
-    onChange(event.target.value)
-  }
-
-  const handleFocus = () => {
-    onFocus()
-  }
 
   return <input
     className={classes.searchBoxInput}
     type="text"
     placeholder="Type the name of a city"
-    onChange={handleChange}
-    onFocus={handleFocus}
+    onChange={onChange}
+    onFocus={onFocus}
     value={value}
   />
+}
+
+SearchBoxInput.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func
 }
 
 export default SearchBoxInput
