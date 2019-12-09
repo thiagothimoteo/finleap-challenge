@@ -1,24 +1,19 @@
 import React from 'react'
 import { waitForElementToBeRemoved, fireEvent } from '@testing-library/react'
-import { cleanup } from '@testing-library/react'
 
 import { renderWithRedux } from '../../setupTests'
 import CitiesList from './CitiesList'
 
 describe('CitiesList', () => {
-  afterEach(cleanup)
-
   it('renders blankslate when there is no active city', () => {
-    const initialState = []
-    const { getByText } = renderWithRedux(<CitiesList />, { initialState })
+    const { getByText } = renderWithRedux(<CitiesList />)
     const blankslate = getByText("There are no cities selected :(")
 
     expect(blankslate).toBeInTheDocument()
   })
 
   it('renders initial cities list correctly', async () => {
-    const initialState = []
-    const { getByText, container } = renderWithRedux(<CitiesList />, { initialState })
+    const { getByText, container } = renderWithRedux(<CitiesList />)
 
     await waitForElementToBeRemoved(() => getByText("There are no cities selected :("))
 
@@ -28,8 +23,7 @@ describe('CitiesList', () => {
   })
 
   it('removes city from list', async () => {
-    const initialState = []
-    const { getByText, queryByText } = renderWithRedux(<CitiesList />, { initialState })
+    const { getByText, queryByText } = renderWithRedux(<CitiesList />)
 
     await waitForElementToBeRemoved(() => getByText("There are no cities selected :("))
 
