@@ -29,7 +29,7 @@ const SearchBoxResults = ({ results, isActive, onClick }) => {
   const classes = useStyles({ isActive })
 
   const handleClick = event => {
-    onClick(event.target.value)
+    onClick(event.target.id)
   }
 
   return (

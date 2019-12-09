@@ -46,10 +46,10 @@ const SearchBox = () => {
     })
   }
 
-  const handleClick = event => {
+  const handleClick = value => {
     dispatch({
       type: 'ADD_CITY',
-      cityID: event.target.id
+      cityID: value
     })
   }
 
